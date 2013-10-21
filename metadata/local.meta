@@ -1,0 +1,58 @@
+[]
+access = read : [ * ], write : [ admin ]
+export = system
+
+[nav/default]
+version = 5.0.2
+modtime = 1382103159.080848000
+
+[views/iops]
+owner = admin
+version = 5.0
+modtime = 1362005570.658072000
+
+[views/IOPS]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = nobody
+version = 5.0.1
+modtime = 1362428958.864370000
+
+[savedsearches/IOPS%20by%20device]
+export = none
+owner = admin
+version = 5.0
+modtime = 1362007526.985466000
+
+[savedsearches/IOPS%20last%2010%20minutes]
+export = none
+owner = admin
+version = 5.0
+modtime = 1362007542.546310000
+
+[savedsearches/Slowest%20devices]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1362344277.793501000
+
+[views/Investigate]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 6.0
+modtime = 1381514736.984886000
+
+[views/overview]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 5.0.2
+modtime = 1382102997.884409000
+
+[views/adhoc]
+access = read : [ * ]
+export = none
+owner = admin
+version = 5.0.2
+modtime = 1382306084.042265000

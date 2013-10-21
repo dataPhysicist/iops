@@ -1,0 +1,66 @@
+<form>
+  <label>Ad hoc</label>
+  <fieldset>
+    <input type="text" token="location">
+      <label>File or device to test</label>
+      <default>/var/log/messages</default>
+    </input>
+
+   <input type="text" token="threads">
+      <label>Threads</label>
+      <default>5</default>
+    </input>
+
+   <input type="text" token="run_time">
+      <label>Run time (seconds)</label>
+      <default>7</default>
+    </input>
+  </fieldset>
+
+  <row>
+<html>
+ <h1>This page isn't ready for prime time. I may not include it.</h1>
+</html>
+  </row>
+
+  <row>
+      <table>
+      <title>Results</title>
+      <searchString>| iops -n $threads$ -t $run_time$ $location$</searchString>
+      <option name="wrap">true</option>
+      <option name="rowNumbers">false</option>
+      <option name="dataOverlayMode">none</option>
+      <option name="drilldown">row</option>
+      <option name="count">10</option>
+    </table>
+  </row>
+
+    <row>
+
+    <html>
+      <div class="content_width">
+      <h1>Important</h1>
+
+      <h2 style="padding-top: 6px">Caching</h2>
+      <p>
+        If you get a very high IOPS value (>20,000) you are probably hitting cache. Below are some options that can clear the system cache, but remember, caching could be occuring elsewhere as well.
+
+    <p>1. Clear the cache of the individual file with <a href="https://github.com/hoytech/vmtouch">vmtouch.</a></p>
+    <p><code>
+        vmtouch -e <i>file</i>
+    </code></p>
+
+    <p>2. Use a raw file system. This is a great option if you are running as root. If you don't know the raw device you can run the command below and choose the appropriate file system from the far left column.</p>
+    <p><code>
+        df -a
+    </code></p>
+      </p>
+
+    <p>3. You could clear the all system cache, but this isn't recommended.</p>
+    <p><code>
+        sync &amp;&amp; echo 3 > /proc/sys/vm/drop_caches
+    </code></p>  
+    </div>
+  </html>
+  </row>
+</form>

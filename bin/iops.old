@@ -1,0 +1,40 @@
+#!/bin/bash
+# Nate McKervey
+
+#Set this to the directory splunk is installed
+SPLUNK_HOME=/opt/splunk
+
+#How long do you want it to run? seconds
+TIME=1
+
+#Number of threads
+THREADS=5
+
+#Get the splunk environment variables such as the DB directory
+. $SPLUNK_HOME/bin/setSplunkEnv
+
+#Pick the disk location you want to test by specifying the index
+#INDEX=defaultdb
+INDEX=_internaldb
+
+HOSTNAME=`hostname`
+
+if [[ $EUID -eq 0 ]]; then
+	HOME=`df $SPLUNK_DB/$INDEX/db/ | awk 'NR==2'| awk '{ print $1 }'`
+	COLD=`df $SPLUNK_DB/$INDEX/colddb/ | awk 'NR==2'| awk '{ print $1 }'`
+else
+        #If this script was running as root, we could test the filesystem directly (reduces cache hits)
+        #Instead I'll try to find some files to test that this user has access to.
+
+        #We don't want to test really small files, so let's find some over 10MB
+        #And let's also pick a random one over 10MB so we don't have as many cache hits the next time we run
+        #HOME=`find $SPLUNK_DB/$INDEX/db/db_* -name journal.gz -type f -size +10M | sort -R | head -1`
+        HOME=`find $SPLUNK_DB/$INDEX/db/db_* -name journal.gz -type f -size +10k | head -1`
+        #HOT=`find $SPLUNK_DB/$INDEX/db/hot* -name journal.gz -type f -size +10M | sort -R | head -1`
+        COLD=`find $SPLUNK_DB/$INDEX/colddb/ -name journal.gz -type f -size +10k | head -1`
+fi 
+
+if [[ $COLD != $HOME ]] && [[ $COLD != "" ]] ; then
+	$SPLUNK_HOME/bin/splunk cmd python $SPLUNK_HOME/etc/apps/iops/bin/iops.py -n $THREADS -t $TIME $COLD -st cold -h $HOSTNAME
+fi
+$SPLUNK_HOME/bin/splunk cmd python $SPLUNK_HOME/etc/apps/iops/bin/iops.py -n $THREADS -t $TIME $HOME -st warm -h $HOSTNAME

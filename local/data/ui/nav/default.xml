@@ -1,0 +1,5 @@
+<nav>
+    <view name="overview" default='true' />
+    <view name="adhoc" />
+    <view name="flashtimeline" />
+</nav>

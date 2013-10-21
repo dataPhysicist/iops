@@ -1,0 +1,75 @@
+<form>
+  <label>Overview</label>
+  <fieldset autoRun="true">
+    <input type="dropdown" token="location">
+      <label>Location</label>
+      <suffix>*</suffix>
+      <populatingSearch fieldForValue="location" fieldForLabel="location" earliest="-1h">sourcetype=iops | fields location | dedup location | sort -location </populatingSearch>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+    <input type="dropdown" token="host">
+      <label>Host</label>
+      <suffix>*</suffix>
+      <populatingSearch fieldForValue="host" fieldForLabel="host" earliest="-1h">sourcetype=iops | fields host | dedup host | sort -host </populatingSearch>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+    <input type="time">
+      <default>
+        <earliestTime>-60m@m</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+  </fieldset>
+  <searchTemplate>sourcetype=iops location=$location$ host=$host$ | fields iops host location</searchTemplate>
+  <row>
+    <chart>
+      <title>Overall Average IOPS</title>
+      <searchPostProcess>stats avg(iops) as iops</searchPostProcess>      
+      <option name="charting.axisTitleX.visibility">visible</option>
+      <option name="charting.axisTitleY.visibility">visible</option>
+      <option name="charting.axisX.scale">linear</option>
+      <option name="charting.axisY.scale">linear</option>
+      <option name="charting.chart">radialGauge</option>
+      <option name="charting.chart.nullValueMode">gaps</option>
+      <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+      <option name="charting.chart.stackMode">default</option>
+      <option name="charting.chart.style">shiny</option>
+      <option name="charting.drilldown">all</option>
+      <option name="charting.layout.splitSeries">0</option>
+      <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+      <option name="charting.legend.placement">right</option>
+      <option name="charting.chart.rangeValues">["0","400","800","1200","1600"]</option>
+      <option name="charting.gaugeColors">[0xd13b3b,0xf7912c,0xebe42d,0x7e9f44]</option>
+    </chart>
+    <table>
+      <title>Performance by location and host</title>
+      <searchPostProcess>chart sparkline avg(iops) max(iops) min(iops) by location,host</searchPostProcess>
+      <option name="wrap">true</option>
+      <option name="rowNumbers">false</option>
+      <option name="dataOverlayMode">none</option>
+      <option name="drilldown">row</option>
+      <option name="count">10</option>
+    </table>
+  </row>
+  <row>
+    <chart>
+      <title>Performance by location</title>
+      <searchPostProcess>timechart avg(iops) AS IOPS by location</searchPostProcess>
+      <option name="charting.axisTitleX.visibility">visible</option>
+      <option name="charting.axisTitleY.visibility">visible</option>
+      <option name="charting.axisX.scale">linear</option>
+      <option name="charting.axisY.scale">linear</option>
+      <option name="charting.chart">line</option>
+      <option name="charting.chart.nullValueMode">gaps</option>
+      <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+      <option name="charting.chart.stackMode">default</option>
+      <option name="charting.chart.style">shiny</option>
+      <option name="charting.drilldown">all</option>
+      <option name="charting.layout.splitSeries">0</option>
+      <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+      <option name="charting.legend.placement">right</option>
+    </chart>
+  </row>
+</form>
