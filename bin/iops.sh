@@ -5,7 +5,7 @@
 SPLUNK_HOME=/opt/splunk
 
 #How long do you want it to run? seconds
-TIME=5
+TIME=7
 
 #Number of threads
 THREADS=5
@@ -18,7 +18,7 @@ THREADS=5
 #INDEX=defaultdb
 INDEX=_internaldb
 
-if [[ $EUID -ne 1 ]]; then
+if [[ $EUID -ne 0 ]]; then
 	#Since the user is not root, we cannot test the filesystem directly (reduces cache hits)
   #Instead let's find some large files to test
 	HOME=`find $SPLUNK_DB/$INDEX/db/db_* -name journal.gz -type f -size +10000k | head -1`
