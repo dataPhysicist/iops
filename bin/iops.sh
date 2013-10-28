@@ -2,7 +2,7 @@
 # N8 2013
 
 #Set this to the directory splunk is installed
-SPLUNK_HOME=/opt/splunk
+#SPLUNK_HOME=/opt/splunk
 
 #How long do you want it to run? seconds
 TIME=7
