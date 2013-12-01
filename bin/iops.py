@@ -49,11 +49,11 @@ USAGE = """Copyright (c) 2008-2013 Benjamin Schweizer and others.
 
 usage:
 
-    iops [-n|--num_threads threads] [-t|--time time] <device>
+    iops [-n|--num_threads threads] [-t|--time time] <file>
 
     threads := number of concurrent io threads, default 32
     time    := time in seconds, default 2
-    device  := some block device, like /dev/sda or \\\\.\\PhysicalDrive0
+    file  := csv file with list of locations to test
 
 example:
 
@@ -69,6 +69,7 @@ import struct
 import random
 import time
 import threading
+import csv
 from time import gmtime, strftime
 
 def mediasize(dev):
@@ -225,43 +226,53 @@ if __name__ == '__main__':
         else:
             dev = arg
 
-    # run benchmark
-    blocksize = 4096
-    try:
-        #print "%s, %sB, %d threads:" % (dev, greek(mediasize(dev), 2, 'si'), num_threads)
-        _iops = num_threads+1 # initial loop
-        #while _iops  > num_threads and blocksize < mediasize(dev):
-	runs = 1
-	while (runs  > 0):
-            # threading boilerplate
-            threads = []
-            results = []
-            
-            def results_wrap(results, func, *__args, **__kw):
-                """collect return values from func"""
-                result = func(*__args, **__kw)
-                results.append(result)
 
-            for i in range(0, num_threads):
-                _t = threading.Thread(target=results_wrap, args=(results, iops, dev, blocksize, t,))
-                _t.start()
-                threads.append(_t)
+    ifile  = open(dev, "rb")
+    reader = csv.reader(ifile)
 
-            for _t in threads:
-                _t.join()
-            _iops = sum(results)
+    rownum = 0
+    for row in reader:
+        rownum += 1
+        dev=row[0]
+        file_size_mb=row[1]
 
-            bandwidth = int(blocksize*_iops)
-            #print " %sB blocks: %6.1f IO/s, %sB/s (%sbit/s)" % (greek(blocksize), _iops, greek(bandwidth, 1), greek(8*bandwidth, 1, 'si'))
-	    print strftime("%Y-%m-%d %H:%M:%S") + " location=%s, storage_type=%s, file_size_kb=%s, threads=%d, block_size=%s, iops=%s" % (dev, storage_type, file_size_kb, num_threads, blocksize, _iops)
-	    #print strftime("%Y-%m-%d %H:%M:%S") + " location=%s, capacity=%s, threads=%d, block_size=%s, iops=%s" % (dev, mediasize(dev), num_threads, blocksize, _iops)
-            #blocksize *= 2
-	    runs-=1
-    except IOError, (err_no, err_str):
-        raise SystemExit(err_str)
-    except KeyboardInterrupt:
-        print "caught ctrl-c, bye."
+        if dev!="file":
+            #skip 
+            # run benchmark
+            blocksize = 4096
+            try:
+                #print "%s, %sB, %d threads:" % (dev, greek(mediasize(dev), 2, 'si'), num_threads)
+                _iops = num_threads+1 # initial loop
+                #while _iops  > num_threads and blocksize < mediasize(dev):
 
+                # threading boilerplate
+                threads = []
+                results = []
+                
+                def results_wrap(results, func, *__args, **__kw):
+                    """collect return values from func"""
+                    result = func(*__args, **__kw)
+                    results.append(result)
+
+                for i in range(0, num_threads):
+                    _t = threading.Thread(target=results_wrap, args=(results, iops, dev, blocksize, t,))
+                    _t.start()
+                    threads.append(_t)
+
+                for _t in threads:
+                    _t.join()
+                _iops = sum(results)
+
+                bandwidth = int(blocksize*_iops)
+                #print " %sB blocks: %6.1f IO/s, %sB/s (%sbit/s)" % (greek(blocksize), _iops, greek(bandwidth, 1), greek(8*bandwidth, 1, 'si'))
+                #print "device=%s" % (dev)
+                print strftime("%Y-%m-%d %H:%M:%S") + " location=%s, file_size_mb=%s, threads=%d, block_size=%s, iops=%s" % (dev, file_size_mb, num_threads, blocksize, _iops)
+        	    
+            except IOError, (err_no, err_str):
+                raise SystemExit(err_str)
+            except KeyboardInterrupt:
+                print "caught ctrl-c, bye."
+    ifile.close()
 # eof.
 
 
