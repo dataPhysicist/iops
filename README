@@ -1,0 +1,32 @@
+----------------------------------------
+        Author: Nate McKervey
+        Version/Date: 0.1a 10/20/2013
+        Source type(s): iops
+        Linux ONLY (will add compatability if enough interest)
+
+
+What this app does:
+----------------------------------------
+This will measure the IOPS (input output operations per second of random seeks) on the specified locations.
+
+
+Installation
+----------------------------------------
+1. Untar to the $SPLUNK_HOME/etc/apps directory.
+2. If you are NOT running as root you will need to install "vmtouch" to get accurate results by overcoming cache hits. You can get it from https://github.com/hoytech/vmtouch
+3. Restart splunk
+4. If you have a distributed environment then install the iops app or TA-iops on the indexers as well.
+5. Navigate to the "IOPS" app in the app dropdown of the search head.
+
+
+Notes:
+----------------------------------------
+If you have a distributed environment and you are forwarding all internal logs on the search heads then you should disable the scripted input on the search head(s).
+
+
+Good to know
+----------------------------------------
+A custom command is included called "iops" that will let you test a specific file or raw device from the search web interface or from the search command line. 
+
+	Usage: | iops -n <number of threads> -t <seconds to run> <full path of file or device>
+	Example: | iops -n 5 -t 1 /var/log/messages
