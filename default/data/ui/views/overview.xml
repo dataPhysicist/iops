@@ -25,8 +25,8 @@
   <searchTemplate><![CDATA[index=summary search_name=measure_iops location=$location$* host=$host$ | rex field=location "(?<location>.+?\/db)"| eval uid=host+":"+location | fields iops host location uid]]></searchTemplate>
   <row>
     <chart>
-      <title>Overall Average IOPS</title>
-      <searchPostProcess>stats perc30(iops) as iops</searchPostProcess>      
+      <title>Minimum IOPS</title>
+      <searchPostProcess>stats min(iops) as iops</searchPostProcess>      
       <option name="charting.axisTitleX.visibility">visible</option>
       <option name="charting.axisTitleY.visibility">visible</option>
       <option name="charting.axisX.scale">linear</option>
@@ -45,7 +45,7 @@
     </chart>
         <chart>
       <title>Slowest locations</title>
-      <searchPostProcess>| stats perc30(iops) as iops by uid | sort iops | head 5</searchPostProcess>
+      <searchPostProcess>| stats min(iops) as iops by uid | sort iops | head 5</searchPostProcess>
       <option name="charting.axisTitleX.visibility">visible</option>
       <option name="charting.axisTitleY.visibility">visible</option>
       <option name="charting.axisX.scale">linear</option>
@@ -60,7 +60,7 @@
   <row>
     <chart>
       <title>Performance by location</title>
-      <searchPostProcess>timechart minspan=60m perc30(iops) AS IOPS by uid</searchPostProcess>
+      <searchPostProcess>timechart minspan=60m min(iops) AS IOPS by uid</searchPostProcess>
       <option name="charting.axisTitleX.visibility">visible</option>
       <option name="charting.axisTitleY.visibility">visible</option>
       <option name="charting.axisX.scale">linear</option>
@@ -79,7 +79,7 @@
   <row>
         <table>
       <title>Performance by location and host</title>
-      <searchPostProcess>|stats sparkline(perc30(iops)) AS IOPS perc30(iops) AS AVG max(iops) AS MAX min(iops) AS MIN by host,location</searchPostProcess>
+      <searchPostProcess>|stats sparkline(min(iops)) AS IOPS avg(iops) AS AVG max(iops) AS MAX min(iops) AS MIN by host,location</searchPostProcess>
       <option name="wrap">true</option>
       <option name="rowNumbers">false</option>
       <option name="dataOverlayMode">none</option>
