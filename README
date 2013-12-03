@@ -15,12 +15,14 @@ Installation
 2. A list of files to monitor will be generated within 20 minutes (see savedsearches.conf). By default, only the _internal and main indexes will be monitored. To add more copy default/macros.conf to local/macros.conf and add additional indexes. 
 3. You can manually set a files or raw devices to be monitored by adding them to lookups/iops_manual_file_list.csv
 3. Restart splunk
-4. If you have a distributed environment then install the iops app or TA-iops on the indexers as well.
-5. Navigate to the "IOPS" app in the app dropdown of the search head.
+4. If you have a distributed environment then install the iops app or TA-iops on the indexers as well. Don't forget to update the lookups/iops_manual_file_list.csv on them as well. 
+5. Wait an hour and navigate to the "IOPS" app in the app dropdown of the search head.
 
 
 Good to know
 ----------------------------------------
+Monitoring the raw device should eliminate the cache hits. On unix you can git a list of the raw devices by running "df | awk '{ print $1 }' | grep dev" from the command line. 
+
 A custom command is included called "iops" that will let you test a specific file or raw device from the search web interface or from the search command line.
 
         Usage: | iops -n <number of threads> -t <seconds to run> <full path of file or device>
