@@ -17,7 +17,7 @@
     </input>
     <input type="time">
       <default>
-        <earliestTime>-60m@m</earliestTime>
+        <earliestTime>Last 24 hours</earliestTime>
         <latestTime>now</latestTime>
       </default>
     </input>
@@ -26,7 +26,7 @@
   <row>
     <chart>
       <title>Minimum IOPS</title>
-      <searchPostProcess>stats min(iops) as iops</searchPostProcess>      
+      <searchPostProcess>stats min(iops) as iops `round(iops)`</searchPostProcess>      
       <option name="charting.axisTitleX.visibility">visible</option>
       <option name="charting.axisTitleY.visibility">visible</option>
       <option name="charting.axisX.scale">linear</option>
@@ -45,7 +45,7 @@
     </chart>
         <chart>
       <title>Slowest locations</title>
-      <searchPostProcess>| stats min(iops) as iops by uid | sort iops | head 5</searchPostProcess>
+      <searchPostProcess>| stats min(iops) as iops by uid | sort iops | head 5 `round(iops)`</searchPostProcess>
       <option name="charting.axisTitleX.visibility">visible</option>
       <option name="charting.axisTitleY.visibility">visible</option>
       <option name="charting.axisX.scale">linear</option>
@@ -79,7 +79,7 @@
   <row>
         <table>
       <title>Performance by location and host</title>
-      <searchPostProcess>|stats sparkline(min(iops)) AS IOPS avg(iops) AS AVG max(iops) AS MAX min(iops) AS MIN by host,location</searchPostProcess>
+      <searchPostProcess>|stats sparkline(min(iops)) AS IOPS avg(iops) AS AVG max(iops) AS MAX min(iops) AS MIN by host,location `round(MAX)` `round(MIN)` `round(AVG)`</searchPostProcess>
       <option name="wrap">true</option>
       <option name="rowNumbers">false</option>
       <option name="dataOverlayMode">none</option>
