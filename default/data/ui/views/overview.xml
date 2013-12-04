@@ -58,25 +58,6 @@
     </chart>
   </row>
   <row>
-    <chart>
-      <title>Performance by location</title>
-      <searchPostProcess>timechart minspan=60m min(iops) AS IOPS by uid</searchPostProcess>
-      <option name="charting.axisTitleX.visibility">visible</option>
-      <option name="charting.axisTitleY.visibility">visible</option>
-      <option name="charting.axisX.scale">linear</option>
-      <option name="charting.axisY.scale">linear</option>
-      <option name="charting.chart">line</option>
-      <option name="charting.chart.nullValueMode">connect</option>
-      <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
-      <option name="charting.chart.stackMode">default</option>
-      <option name="charting.chart.style">shiny</option>
-      <option name="charting.drilldown">all</option>
-      <option name="charting.layout.splitSeries">0</option>
-      <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
-      <option name="charting.legend.placement">right</option>
-    </chart>
-  </row>
-  <row>
         <table>
       <title>Performance by location and host</title>
       <searchPostProcess>|stats sparkline(min(iops)) AS IOPS avg(iops) AS AVG max(iops) AS MAX min(iops) AS MIN by host,location `round(MAX)` `round(MIN)` `round(AVG)`</searchPostProcess>
