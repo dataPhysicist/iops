@@ -3,6 +3,8 @@
   <fieldset>
     <input type="text" token="location">
       <label>File or device to test</label>
+      <prefix>"</prefix>
+      <suffix>"</suffix>
       <default>/var/log/messages</default>
     </input>
 
@@ -16,13 +18,6 @@
       <default>7</default>
     </input>
   </fieldset>
-
-  <row>
-<html>
- <h1>This page isn't ready for prime time. I may not include it.</h1>
-</html>
-  </row>
-
   <row>
       <table>
       <title>Results</title>
@@ -43,14 +38,14 @@
 
       <h2 style="padding-top: 6px">Caching</h2>
       <p>
-        If you get a very high IOPS value (>20,000) you are probably hitting cache. Below are some options that can clear the system cache, but remember, caching could be occuring elsewhere as well.
+        If you get a very high IOPS value you are probably hitting cache. Below are some options that can clear the system cache, but remember, caching could be occuring elsewhere as well.
 
     <p>1. Clear the cache of the individual file with <a href="https://github.com/hoytech/vmtouch">vmtouch.</a></p>
     <p><code>
         vmtouch -e <i>file</i>
     </code></p>
 
-    <p>2. Use a raw file system. This is a great option if you are running as root. If you don't know the raw device you can run the command below and choose the appropriate file system from the far left column.</p>
+    <p>2. Use a raw file system. This is a good option if you are running as root. If you don't know the raw device you can run the command below and choose the appropriate file system from the far left column.</p>
     <p><code>
         df -a
     </code></p>

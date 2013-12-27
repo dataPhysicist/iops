@@ -4,14 +4,14 @@
       <input type="dropdown" token="location">
       <label>Location</label>
       <suffix>*</suffix>
-      <populatingSearch fieldForValue="location" fieldForLabel="location" earliest="-1h"><![CDATA[index=summary search_name=measure_iops | rex field=location "(?<location>.+?\/db)"| fields location | dedup location | sort -location ]]></populatingSearch>
+      <populatingSearch fieldForValue="location" fieldForLabel="location" earliest="-1h"><![CDATA[index=summary search_name=measure_iops iops>0 | rex field=location "(?<location>.+?\/db)"| fields location | dedup location | sort -location ]]></populatingSearch>
       <choice value="*">All</choice>
       <default>*</default>
     </input>
     <input type="dropdown" token="host">
       <label>Host</label>
       <suffix>*</suffix>
-      <populatingSearch fieldForValue="host" fieldForLabel="host" earliest="-1h">index=summary search_name=measure_iops | fields host | dedup host | sort -host </populatingSearch>
+      <populatingSearch fieldForValue="host" fieldForLabel="host" earliest="-1h">index=summary search_name=measure_iops iops>0| fields host | dedup host | sort -host </populatingSearch>
       <choice value="*">All</choice>
       <default>*</default>
     </input>
@@ -22,7 +22,7 @@
       </default>
     </input>
   </fieldset>
-  <searchTemplate><![CDATA[index=summary search_name=measure_iops location=$location$* host=$host$ | rex field=location "(?<location>.+?\/db)"| eval uid=host+":"+location | fields iops host location uid]]></searchTemplate>
+  <searchTemplate><![CDATA[index=summary search_name=measure_iops location=$location$* host=$host$ iops>0| rex field=location "(?<location>.+?\/db)"| eval uid=host+":"+location | fields iops host location uid]]></searchTemplate>
   <row>
     <chart>
       <title>Minimum IOPS</title>

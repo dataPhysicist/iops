@@ -1,0 +1,4 @@
+file,sizeOnDiskMB,index
+"/dev/sda1"
+"/opt/splunk/var/lib/splunk/_internaldb/db/db_1385939698_1385932772_37/rawdata/journal.gz"
+"C:\Program Files\Splunk\var\lib\splunk\_internaldb\db\db_1388073958_1380310258_0\rawdata\journal.gz"

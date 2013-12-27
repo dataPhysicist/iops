@@ -1,7 +1,6 @@
 ----------------------------------------
         Author: Nate McKervey
-        Version/Date: 0.2 12/1/2013
-        Linux ONLY (will add compatibility if enough interest)
+        Version/Date: 0.3 12/26/2013
 
 
 What this app does:
@@ -21,6 +20,8 @@ Installation
 
 Good to know
 ----------------------------------------
+This application is designed to work on existing environments. Fresh installs will only have hot buckets which means this application will not have anything to test against by default.
+
 Monitoring the raw device should eliminate the cache hits. On unix you can git a list of the raw devices by running "df | awk '{ print $1 }' | grep dev" from the command line. 
 
 A custom command is included called "iops" that will let you test a specific file or raw device from the search web interface or from the search command line.
