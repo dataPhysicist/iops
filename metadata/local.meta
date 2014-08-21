@@ -47,8 +47,8 @@ modtime = 1381514736.984886000
 access = read : [ * ], write : [ admin ]
 export = none
 owner = admin
-version = 5.0.2
-modtime = 1385655735.668817000
+version = 6.1
+modtime = 1397669897.880954000
 
 [views/adhoc]
 access = read : [ * ]
